@@ -12,14 +12,14 @@ jobs:
 
       - name: Install Google Chrome Stable
         run: |
-          DEBIAN_FRONTEND=noninteractive && \
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub > /usr/share/keyrings/chrome.pub && \
-          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list && \
-          apt-get update -y && \
+          sudo DEBIAN_FRONTEND=noninteractive && \
+          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub > /usr/share/keyrings/chrome.pub && \
+          sudo echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list && \
+          sudo apt-get update -y && \
           sudo apt-get -y install google-chrome-stable
-          apt-get install xvfb -y
-          export DISPLAY=:1
-          Xvfb $DISPLAY -screen $DISPLAY 1280x1024x16 &
+          sudo apt-get install xvfb -y
+          sudo export DISPLAY=:1
+          sudo Xvfb $DISPLAY -screen $DISPLAY 1280x1024x16 &
           
 
       - name: Install dependencies
