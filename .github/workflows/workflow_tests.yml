@@ -18,7 +18,7 @@ jobs:
           sudo apt-get update -y && \
           sudo apt-get -y install google-chrome-stable
           sudo apt-get install xvfb -y
-          sudo export DISPLAY=:1
+          export DISPLAY=:1
           sudo Xvfb $DISPLAY -screen $DISPLAY 1280x1024x16 &
           
 
