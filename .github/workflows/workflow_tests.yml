@@ -29,12 +29,11 @@ jobs:
           # Fetch Chrome Version
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
 
-          # Get only the major version number
-          CHROME_VERSION_MAJOR=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+          # Fetch ChromeDriver version that matches the installed Chrome version
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION} || curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
 
-          # Download the matching ChromeDriver version
-          wget -N https://chromedriver.storage.googleapis.com/${CHROME_VERSION_MAJOR}/chromedriver_linux64.zip || wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION_MAJOR}/chromedriver_linux64.zip
-
+          # Download the ChromeDriver
+          wget https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
