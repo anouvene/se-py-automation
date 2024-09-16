@@ -10,7 +10,7 @@ def setup(request):
     chrome_options = webdriver.ChromeOptions()
     options = [
         "--window-size=1920,1200",
-        "headless",
+        "--headless",
         "--disable-infobars",
         "--disable-dev-shm-usage",
         "--no-sandbox",
