@@ -16,9 +16,6 @@ def driver():
         "--remote-debugging-port=9222"
     ]
 
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-
     for option in options:
         chrome_options.add_argument(option)
 
