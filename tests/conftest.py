@@ -13,6 +13,7 @@ def setup(request):
         "--window-size=1920,1200",
         "--ignore-certificate-errors",
         "--disable-extensions",
+        "--headless=new",
         "--no-sandbox",
         "--disable-dev-shm-usage"
     ]
