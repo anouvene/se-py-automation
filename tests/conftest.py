@@ -26,7 +26,6 @@ def driver():
 
     chrome_service = ChromeService(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-    driver.get('https://www.google.com/')
 
 
     # Implicit wait setup for our framework

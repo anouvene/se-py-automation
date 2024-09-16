@@ -1,5 +1,5 @@
 name: workflow_tests
-on: [push]
+on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,42 +10,46 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Google Chrome Stable
+      - name: Install Google Chrome Stable and ChromeDriver
         run: |
-          sudo DEBIAN_FRONTEND=noninteractive && \
-          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub > /usr/share/keyrings/chrome.pub && \
-          sudo echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list && \
-          sudo apt-get update -y && \
+          sudo apt-get update -y
+          sudo apt-get install -y wget gnupg2
+            
+          # Install Google Chrome
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo tee /usr/share/keyrings/chrome.pub
+          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update -y
           sudo apt-get -y install google-chrome-stable
-          sudo apt-get install xvfb -y
-          export DISPLAY=:1
-          sudo Xvfb $DISPLAY -screen $DISPLAY 1280x1024x16 &
           
+          # Install ChromeDriver
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          sudo wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip"
+          sudo apt-get install unzip
+          sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+            
+            # Install Xvfb for headless operation
+            sudo apt-get install -y xvfb
+            export DISPLAY=:1
+            sudo Xvfb $DISPLAY -screen 0 1280x1024x16 &
 
       - name: Install dependencies
-        run: | 
+        run: |
           python -m venv venv
           source venv/bin/activate
           python -m pip install --upgrade setuptools pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest-html-reporter
-          python -m pytest
+          pip install pytest-html-reporter selenium
 
-      - uses: actions/checkout@v4
-        if: success() || failure()
-      - run: |
+      - name: Run tests and generate report
+        run: |
+          source venv/bin/activate
           cd tests
           mkdir -p reports
-          pytest -r admin --browser=chrome --html=reports/automation-report-chrome.html
-          chmod 777 /home/runner/work/se-py-automation/se-py-automation/tests/reports/
+          pytest --browser=chrome --html=reports/automation-report-chrome.html --self-contained-html
 
-      - name: Set output
-        if: success() || failure()
-        id: results
-        run: echo "artifactPath=se-py-automation/tests/reports/" >> $GITHUB_OUTPUT
-
-      - uses: actions/upload-artifact@v4
-        if: success() || failure()
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
         with:
-          name: test-report
-          path: ${{ steps.results.outputs.artifactPath }}
+          name: Test-Report
+          path: tests/reports/automation-report-chrome.html
