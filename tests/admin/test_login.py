@@ -4,8 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-@pytest.mark.usefixtures("driver")
+
 class TestLogin:
+
+    @pytest.mark.usefixtures("driver")
     def test_successful_login(self, driver):
         # Accéder à la page d'administration du site
         driver.get("http://localhost:3000/admin/login")

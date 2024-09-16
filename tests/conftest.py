@@ -5,8 +5,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-@pytest.fixture()
-def setup(request):
+@pytest.fixture(scope='function')
+def driver(request):
     chrome_options = webdriver.ChromeOptions()
     options = [
         "--window-size=1920,1200",
@@ -28,12 +28,12 @@ def setup(request):
     # driver = webdriver.Chrome(options=chrome_options)
 
     chrome_service = ChromeService(ChromeDriverManager().install())
-    request.cls.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    request.instance.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
     # Implicit wait setup for our framework
-    request.cls.driver.implicitly_wait(10)
-    yield request.cls.driver
+    request.instance.driver.implicitly_wait(10)
+    yield request.instance.driver
 
     # Tear down
     print(f"\nTear down: chrome driver")
-    request.cls.driver.quit()
+    request.instance.driver.quit()
