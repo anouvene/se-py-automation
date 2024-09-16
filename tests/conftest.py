@@ -26,7 +26,7 @@ def driver():
     chrome_service = ChromeService(ChromeDriverManager().install())
     #driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     driver = webdriver.Remote(
-        command_executor="http://admin:admin@localhost:4444",
+        command_executor="http://admin:admin@localhost:3000",
         options=chrome_options
     )
 
