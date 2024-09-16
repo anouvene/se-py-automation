@@ -1,0 +1,5 @@
+tests/reports
+.pytest_cache
+.idea/
+tests/__pycache__
+tests/admin/__pycache__
