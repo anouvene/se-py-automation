@@ -13,9 +13,9 @@ def setup(request):
         "--window-size=1920,1200",
         "--ignore-certificate-errors",
         "--disable-extensions",
-        "--headless",
         "--no-sandbox",
         "--disable-dev-shm-usage"
+        "--remote-debugging-port=9222"
     ]
 
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
