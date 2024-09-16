@@ -6,7 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 @pytest.mark.usefixtures("driver")
 class TestLogin:
-    @pytest.fixture
     def test_successful_login(self, driver):
         # Accéder à la page d'administration du site
         driver.get("http://localhost:3000/admin")
