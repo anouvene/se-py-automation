@@ -10,7 +10,6 @@ def setup(request):
     chrome_options = webdriver.ChromeOptions()
     options = [
         "--disable-search-engine-choice-screen",
-        "--headless=new",
         "--disable-gpu",
         "--window-size=1920,1200",
         "--ignore-certificate-errors",
