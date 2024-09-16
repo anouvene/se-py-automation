@@ -1,53 +1,45 @@
 name: workflow_tests
-on: [ push ]
+
+on:
+  push:
+    branches:
+      - main  # This will trigger the workflow on pushes to the "main" branch
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # Check out the repository
       - uses: actions/checkout@v4
+
+      # Set up Python 3.x (adjust this to a specific version like "3.9" if needed)
       - name: Set up Python 3.X
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Install Google Chrome Stable and ChromeDriver
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y wget gnupg2
-            
-          
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo tee /usr/share/keyrings/chrome.pub
-          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update -y
-          sudo apt-get -y install google-chrome-stable
-          
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-          sudo wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip"
-          sudo apt-get install unzip
-          sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-            
-          sudo apt-get install -y xvfb
-          export DISPLAY=:1
-          sudo Xvfb $DISPLAY -screen 0 1280x1024x16 &
-
+      # Install dependencies from requirements.txt
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          python -m pip install --upgrade setuptools pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest-html-reporter selenium
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run tests and generate report
+      # Install Google Chrome Stable and ChromeDriver
+      - name: Install Google Chrome and ChromeDriver
         run: |
-          source venv/bin/activate
-          cd tests
-          mkdir -p reports
-          pytest --browser=chrome --html=reports/automation-report-chrome.html --self-contained-html
+          sudo apt-get update
+          sudo apt-get install -y wget curl unzip
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install ./google-chrome-stable_current_amd64.deb
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          wget https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          rm chromedriver_linux64.zip google-chrome-stable_current_amd64.deb
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test-Report
-          path: tests/reports/automation-report-chrome.html
+      # Run the tests
+      - name: Run tests
+        run: |
+          pytest --maxfail=5 --disable-warnings
