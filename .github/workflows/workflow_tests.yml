@@ -15,23 +15,21 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y wget gnupg2
             
-          # Install Google Chrome
+          
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo tee /usr/share/keyrings/chrome.pub
           echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/chrome.pub] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update -y
           sudo apt-get -y install google-chrome-stable
           
-          # Install ChromeDriver
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
           sudo wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip"
           sudo apt-get install unzip
           sudo unzip chromedriver_linux64.zip -d /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
             
-            # Install Xvfb for headless operation
-            sudo apt-get install -y xvfb
-            export DISPLAY=:1
-            sudo Xvfb $DISPLAY -screen 0 1280x1024x16 &
+          sudo apt-get install -y xvfb
+          export DISPLAY=:1
+          sudo Xvfb $DISPLAY -screen 0 1280x1024x16 &
 
       - name: Install dependencies
         run: |
