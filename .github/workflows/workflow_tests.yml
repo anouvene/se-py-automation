@@ -19,7 +19,7 @@ jobs:
       - run: |
           cd tests
           mkdir -p reports
-          pytest tests/admin/test_login.py --browser=chrome --html=tests/reports/automation-report-chrome.html
+          pytest admin/test_login.py --browser=chrome --html=reports/automation-report-chrome.html
           chmod 777  /home/runner/work/python-se/python-se/tests/reports/
 
       - name: Set output
