@@ -17,7 +17,7 @@ def setup(request):
         "--disable-extensions",
         "--no-sandbox",
         "--disable-dev-shm-usage",
-        "--incognito"
+        "--disable-setuid-sandbox"
     ]
     for option in options:
         chrome_options.add_argument(option)
