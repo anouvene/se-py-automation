@@ -9,15 +9,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 def setup(request):
     chrome_options = webdriver.ChromeOptions()
     options = [
-        "--disable-search-engine-choice-screen",
         "--disable-gpu",
         "--window-size=1920,1200",
         "--ignore-certificate-errors",
         "--disable-extensions",
         "--no-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-setuid-sandbox"
+        "--disable-dev-shm-usage"
     ]
+
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+
     for option in options:
         chrome_options.add_argument(option)
 
