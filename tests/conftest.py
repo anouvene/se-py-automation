@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture(scope='class')
-def driver(request):
+def driver():
     chrome_options = webdriver.ChromeOptions()
     options = [
         "--disable-search-engine-choice-screen",
@@ -27,12 +27,12 @@ def driver(request):
     # driver = webdriver.Chrome(options=chrome_options)
 
     chrome_service = ChromeService(ChromeDriverManager().install())
-    request.instance.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
     # Implicit wait setup for our framework
-    request.instance.driver.implicitly_wait(10)
-    yield request.instance.driver
+    driver.implicitly_wait(10)
+    yield driver
 
     # Tear down
     print(f"\nTear down: chrome driver")
-    request.instance.driver.quit()
+    driver.quit()
