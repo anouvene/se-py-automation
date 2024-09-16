@@ -9,6 +9,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
+      - name: Install Google Chrome Stable
+        run: |
+          sudo apt-get -y install google-chrome-stable
+
       - name: Install dependencies
         run: | 
           python -m venv venv
