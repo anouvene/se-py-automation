@@ -10,9 +10,9 @@ def driver():
     chrome_options = webdriver.ChromeOptions()
     options = [
         "--disable-search-engine-choice-screen",
-        "--headless=new",
-        "--disable-dev-shm-usage",
+        "--headless",
         "--no-sandbox",
+        "--disable-dev-shm-usage",
         "--remote-debugging-port=9222"
     ]
 
@@ -21,10 +21,10 @@ def driver():
 
     # driver_path = ChromeService(executable_path='/usr/local/bin/chromedriver-mac-arm64/chromedriver')
     # driver = webdriver.Chrome(service=driver_path, options=chrome_options)
-    driver = webdriver.Chrome(options=chrome_options)
+    # driver = webdriver.Chrome(options=chrome_options)
 
-    # chrome_service = ChromeService(ChromeDriverManager().install())
-    # driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    chrome_service = ChromeService(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
     # Implicit wait setup for our framework
     driver.implicitly_wait(10)
