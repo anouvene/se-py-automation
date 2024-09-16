@@ -30,7 +30,7 @@ jobs:
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
 
           # Fetch ChromeDriver version that matches the installed Chrome version
-          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION} || curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE | tr -d '\r')
 
           # Download the ChromeDriver
           wget https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
