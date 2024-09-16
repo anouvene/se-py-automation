@@ -5,13 +5,12 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='class')
 def driver(request):
     chrome_options = webdriver.ChromeOptions()
     options = [
-        "--window-size=1920,1200",
-        "--headless",
-        "--disable-infobars",
+        "--disable-search-engine-choice-screen",
+        "--headless=new",
         "--disable-dev-shm-usage",
         "--no-sandbox",
         "--remote-debugging-port=9222"
