@@ -16,7 +16,8 @@ def setup(request):
         "--ignore-certificate-errors",
         "--disable-extensions",
         "--no-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
+        "--incognito"
     ]
     for option in options:
         chrome_options.add_argument(option)
