@@ -13,6 +13,7 @@ def driver():
         "--headless",
         "--no-sandbox",
         "--disable-dev-shm-usage",
+        "--disable-gpu",
         "--remote-debugging-port=9222"
     ]
 
@@ -24,11 +25,8 @@ def driver():
     # driver = webdriver.Chrome(options=chrome_options)
 
     chrome_service = ChromeService(ChromeDriverManager().install())
-    #driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-    driver = webdriver.Remote(
-        command_executor="http://admin:admin@localhost:3000",
-        options=chrome_options
-    )
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
 
     # Implicit wait setup for our framework
     driver.implicitly_wait(10)
