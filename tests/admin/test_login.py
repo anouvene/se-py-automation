@@ -4,16 +4,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-@pytest.mark.usefixtures('driver')
+@pytest.mark.usefixtures("setup")
 class TestLogin:
-    def test_successful_login(self, driver):
+    def test_successful_login(self):
         # Accéder à la page d'administration du site
-        driver.get("http://localhost:3000/admin/login")
+        self.driver.get("http://localhost:3000/admin/login")
 
         # Cibler les champs du formulaire de connexion et le bouton submit
-        email_input = driver.find_element(By.NAME, "email")
-        password_input = driver.find_element(By.NAME, "password")
-        login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+        email_input = self.driver.find_element(By.NAME, "email")
+        password_input = self.driver.find_element(By.NAME, "password")
+        login_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
 
         # Se connecter
         email_input.send_keys("a.nouvene@it-students.fr")
@@ -23,11 +23,11 @@ class TestLogin:
         login_button.click()
 
         # Vérifier la connexion au dashbord
-        WebDriverWait(driver, 10).until(EC.title_contains("Dashboard"))
+        WebDriverWait(self.driver, 10).until(EC.title_contains("Dashboard"))
         time.sleep(3)
 
         try:
-            assert "Dashboard" in driver.title
+            assert "Dashboard" in self.driver.title
         except Exception as e:
             print("Echec de connexion", e)
 
