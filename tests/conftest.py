@@ -33,5 +33,5 @@ def driver():
     yield driver
 
     # Tear down
-    print(f"\nTear down: chrome driver")
-    driver.quit()
+    # print(f"\nTear down: chrome driver")
+    # driver.quit()
